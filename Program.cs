@@ -1,7 +1,7 @@
-using MVCAssignmentTwo.Repository;
-using MVCAssignmentTwo.Service;
+﻿using MVCAssignmentsOne.Repository;
+using MVCAssignmentsOne.Service;
 
-namespace MVCAssignmentTwo
+namespace MVCAssignments
 {
     public class Program
     {
@@ -9,19 +9,23 @@ namespace MVCAssignmentTwo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<IProfessorRepository, ProfessorRepositoryImpl>();
-            builder.Services.AddScoped<IProfessorService, ProfessorServiceImpl>();
+            //  Register your services (Dependency Injection)
+            builder.Services.AddScoped<IPatientService, PatientServiceImpl>();
+            builder.Services.AddScoped<IPatientRepository, PatientRepositoryImpl>();
+
+            // Read connection string from appsettings.json
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // ⚙️ Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -29,12 +33,11 @@ namespace MVCAssignmentTwo
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Professor}/{action=Index}/{id?}"
+                pattern: "{controller=Patient}/{action=Index}/{id?}"
             );
 
             app.Run();
