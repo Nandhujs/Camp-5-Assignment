@@ -20,16 +20,3 @@ html {
 body {
   margin-bottom: 60px;
 }
-
-input[type="text"] {
-    font-weight:bold;
-}
-
-input[type="number"] {
-    font-weight: bold;
-}
-
-input[type="date"] {
-    font-weight: bold;
-}
-
